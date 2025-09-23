@@ -1,7 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { NormalizedReviewsResponse } from '../interfaces/review.interface';
+import { NormalizedReviewsResponse, Review } from '../interfaces/review.interface';
 import { ReviewsController } from '../reviews.controller';
 import { ReviewsService } from '../reviews.service';
+
+// Use global Jest types
+import '@types/jest';
 
 describe('ReviewsController', () => {
   let controller: ReviewsController;
@@ -37,30 +40,30 @@ describe('ReviewsController', () => {
   describe('getHostawayReviews', () => {
     it('should return normalized Hostaway reviews', async () => {
       // Arrange
+      const mockReview: Review = {
+        id: '7453',
+        listingId: '123456',
+        listingName: '2B N1 A - 29 Shoreditch Heights',
+        reviewer: 'Shane Finkelstein',
+        type: 'host-to-guest',
+        status: 'published',
+        rating: 9.5,
+        categories: {
+          cleanliness: 10,
+          communication: 10,
+          respect_house_rules: 10,
+          experience: 8
+        },
+        text: 'Shane and family are wonderful! Would definitely host again :)',
+        submittedAt: '2020-08-21T22:45:14.000Z',
+        channel: 'hostaway',
+        approved: false,
+        source: 'hostaway',
+        raw: {} // This would be the full raw data in reality
+      };
+
       const expectedResponse: NormalizedReviewsResponse = {
-        reviews: [
-          {
-            id: '7453',
-            listingId: '123456',
-            listingName: '2B N1 A - 29 Shoreditch Heights',
-            reviewer: 'Shane Finkelstein',
-            type: 'host-to-guest',
-            status: 'published',
-            rating: 9.5,
-            categories: {
-              cleanliness: 10,
-              communication: 10,
-              respect_house_rules: 10,
-              experience: 8
-            },
-            text: 'Shane and family are wonderful! Would definitely host again :)',
-            submittedAt: '2020-08-21T22:45:14.000Z',
-            channel: 'hostaway',
-            approved: false,
-            source: 'hostaway',
-            raw: {} // This would be the full raw data in reality
-          }
-        ],
+        reviews: [mockReview],
         meta: {
           total: 1,
           source: 'hostaway'
@@ -73,16 +76,17 @@ describe('ReviewsController', () => {
       const result = await controller.getHostawayReviews();
 
       // Assert
-      expect(result).toBe(expectedResponse);
+      expect(result).toEqual(expectedResponse);
       expect(mockReviewsService.getHostawayReviews).toHaveBeenCalled();
     });
 
     it('should handle errors gracefully', async () => {
       // Arrange
-      mockReviewsService.getHostawayReviews.mockRejectedValue(new Error('Failed to fetch reviews'));
+      const errorMessage = 'Failed to fetch reviews';
+      mockReviewsService.getHostawayReviews.mockRejectedValue(new Error(errorMessage));
 
       // Act & Assert
-      await expect(controller.getHostawayReviews()).rejects.toThrow('Failed to fetch reviews');
+      await expect(controller.getHostawayReviews()).rejects.toThrow(errorMessage);
     });
 
     it('should handle empty review array', async () => {
@@ -101,7 +105,7 @@ describe('ReviewsController', () => {
       const result = await controller.getHostawayReviews();
 
       // Assert
-      expect(result).toBe(expectedResponse);
+      expect(result).toEqual(expectedResponse);
       expect(result.reviews).toHaveLength(0);
       expect(result.meta.total).toBe(0);
     });

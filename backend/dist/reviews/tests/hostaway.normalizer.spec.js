@@ -1,13 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const hostaway_normalizer_1 = require("../normalizers/hostaway.normalizer");
-describe('HostawayNormalizer', () => {
+const globals_1 = require("@jest/globals");
+(0, globals_1.describe)('HostawayNormalizer', () => {
     let normalizer;
-    beforeEach(() => {
+    (0, globals_1.beforeEach)(() => {
         normalizer = new hostaway_normalizer_1.HostawayNormalizer();
     });
-    describe('normalize', () => {
-        it('should normalize a valid Hostaway review', () => {
+    (0, globals_1.describe)('normalize', () => {
+        (0, globals_1.it)('should normalize a valid Hostaway review', () => {
             const rawReview = {
                 id: '7453',
                 reservationId: '61432',
@@ -38,7 +39,7 @@ describe('HostawayNormalizer', () => {
                 updatedTime: '2020-08-22T10:15:05.000Z'
             };
             const result = normalizer.normalize(rawReview);
-            expect(result).toEqual({
+            (0, globals_1.expect)(result).toEqual({
                 id: '7453',
                 listingId: '123456',
                 listingName: '2B N1 A - 29 Shoreditch Heights',
@@ -60,7 +61,7 @@ describe('HostawayNormalizer', () => {
                 raw: rawReview
             });
         });
-        it('should handle missing reviewer information', () => {
+        (0, globals_1.it)('should handle missing reviewer information', () => {
             const rawReview = {
                 id: '12345',
                 listingMapId: '67890',
@@ -76,10 +77,10 @@ describe('HostawayNormalizer', () => {
                 createdTime: '2022-01-01T00:00:00.000Z'
             };
             const result = normalizer.normalize(rawReview);
-            expect(result.reviewer).toBe('Unknown Reviewer');
-            expect(result.type).toBe('guest-to-host');
+            (0, globals_1.expect)(result.reviewer).toBe('Unknown Reviewer');
+            (0, globals_1.expect)(result.type).toBe('guest-to-host');
         });
-        it('should handle missing scores', () => {
+        (0, globals_1.it)('should handle missing scores', () => {
             const rawReview = {
                 id: '12345',
                 listingMapId: '67890',
@@ -95,10 +96,10 @@ describe('HostawayNormalizer', () => {
                 createdTime: '2022-01-01T00:00:00.000Z'
             };
             const result = normalizer.normalize(rawReview);
-            expect(result.rating).toBe(0);
-            expect(result.categories).toEqual({});
+            (0, globals_1.expect)(result.rating).toBe(0);
+            (0, globals_1.expect)(result.categories).toEqual({});
         });
-        it('should handle missing or empty comment', () => {
+        (0, globals_1.it)('should handle missing or empty comment', () => {
             const rawReview = {
                 id: '12345',
                 listingMapId: '67890',
@@ -116,9 +117,9 @@ describe('HostawayNormalizer', () => {
                 createdTime: '2022-01-01T00:00:00.000Z'
             };
             const result = normalizer.normalize(rawReview);
-            expect(result.text).toBe('');
+            (0, globals_1.expect)(result.text).toBe('');
         });
-        it('should handle unknown status', () => {
+        (0, globals_1.it)('should handle unknown status', () => {
             const rawReview = {
                 id: '12345',
                 listingMapId: '67890',
@@ -136,9 +137,9 @@ describe('HostawayNormalizer', () => {
                 createdTime: '2022-01-01T00:00:00.000Z'
             };
             const result = normalizer.normalize(rawReview);
-            expect(result.status).toBe('unknown');
+            (0, globals_1.expect)(result.status).toBe('unknown');
         });
-        it('should handle invalid date formats', () => {
+        (0, globals_1.it)('should handle invalid date formats', () => {
             const rawReview = {
                 id: '12345',
                 listingMapId: '67890',
@@ -156,15 +157,15 @@ describe('HostawayNormalizer', () => {
                 createdTime: 'invalid-date'
             };
             const result = normalizer.normalize(rawReview);
-            expect(result.submittedAt).not.toBe('invalid-date');
-            expect(() => new Date(result.submittedAt)).not.toThrow();
+            (0, globals_1.expect)(result.submittedAt).not.toBe('invalid-date');
+            (0, globals_1.expect)(() => new Date(result.submittedAt)).not.toThrow();
         });
-        it('should throw error if review data is null', () => {
-            expect(() => normalizer.normalize(null)).toThrow('Review data is required');
+        (0, globals_1.it)('should throw error if review data is null', () => {
+            (0, globals_1.expect)(() => normalizer.normalize(null)).toThrow('Review data is required');
         });
     });
-    describe('normalizeMany', () => {
-        it('should normalize an array of reviews', () => {
+    (0, globals_1.describe)('normalizeMany', () => {
+        (0, globals_1.it)('should normalize an array of reviews', () => {
             const rawReviews = [
                 {
                     id: '1',
@@ -192,11 +193,11 @@ describe('HostawayNormalizer', () => {
                 }
             ];
             const results = normalizer.normalizeMany(rawReviews);
-            expect(results.length).toBe(2);
-            expect(results[0].id).toBe('1');
-            expect(results[1].id).toBe('2');
+            (0, globals_1.expect)(results.length).toBe(2);
+            (0, globals_1.expect)(results[0].id).toBe('1');
+            (0, globals_1.expect)(results[1].id).toBe('2');
         });
-        it('should filter out null or undefined reviews', () => {
+        (0, globals_1.it)('should filter out null or undefined reviews', () => {
             const rawReviews = [
                 {
                     id: '1',
@@ -226,14 +227,14 @@ describe('HostawayNormalizer', () => {
                 }
             ];
             const results = normalizer.normalizeMany(rawReviews);
-            expect(results.length).toBe(2);
-            expect(results[0].id).toBe('1');
-            expect(results[1].id).toBe('2');
+            (0, globals_1.expect)(results.length).toBe(2);
+            (0, globals_1.expect)(results[0].id).toBe('1');
+            (0, globals_1.expect)(results[1].id).toBe('2');
         });
-        it('should return empty array if input is not an array', () => {
-            expect(normalizer.normalizeMany(null)).toEqual([]);
-            expect(normalizer.normalizeMany(undefined)).toEqual([]);
-            expect(normalizer.normalizeMany({})).toEqual([]);
+        (0, globals_1.it)('should return empty array if input is not an array', () => {
+            (0, globals_1.expect)(normalizer.normalizeMany(null)).toEqual([]);
+            (0, globals_1.expect)(normalizer.normalizeMany(undefined)).toEqual([]);
+            (0, globals_1.expect)(normalizer.normalizeMany({})).toEqual([]);
         });
     });
 });

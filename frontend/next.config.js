@@ -11,7 +11,7 @@ const nextConfig = {
     ];
   },
   images: {
-    domains: ['hostaway.com'],
+    domains: ['hostaway.com', 'picsum.photos'],
   },
 };
 

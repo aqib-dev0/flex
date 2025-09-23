@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const testing_1 = require("@nestjs/testing");
 const reviews_controller_1 = require("../reviews.controller");
 const reviews_service_1 = require("../reviews.service");
+require("@types/jest");
 describe('ReviewsController', () => {
     let controller;
     let service;
@@ -31,30 +32,29 @@ describe('ReviewsController', () => {
     });
     describe('getHostawayReviews', () => {
         it('should return normalized Hostaway reviews', async () => {
+            const mockReview = {
+                id: '7453',
+                listingId: '123456',
+                listingName: '2B N1 A - 29 Shoreditch Heights',
+                reviewer: 'Shane Finkelstein',
+                type: 'host-to-guest',
+                status: 'published',
+                rating: 9.5,
+                categories: {
+                    cleanliness: 10,
+                    communication: 10,
+                    respect_house_rules: 10,
+                    experience: 8
+                },
+                text: 'Shane and family are wonderful! Would definitely host again :)',
+                submittedAt: '2020-08-21T22:45:14.000Z',
+                channel: 'hostaway',
+                approved: false,
+                source: 'hostaway',
+                raw: {}
+            };
             const expectedResponse = {
-                reviews: [
-                    {
-                        id: '7453',
-                        listingId: '123456',
-                        listingName: '2B N1 A - 29 Shoreditch Heights',
-                        reviewer: 'Shane Finkelstein',
-                        type: 'host-to-guest',
-                        status: 'published',
-                        rating: 9.5,
-                        categories: {
-                            cleanliness: 10,
-                            communication: 10,
-                            respect_house_rules: 10,
-                            experience: 8
-                        },
-                        text: 'Shane and family are wonderful! Would definitely host again :)',
-                        submittedAt: '2020-08-21T22:45:14.000Z',
-                        channel: 'hostaway',
-                        approved: false,
-                        source: 'hostaway',
-                        raw: {}
-                    }
-                ],
+                reviews: [mockReview],
                 meta: {
                     total: 1,
                     source: 'hostaway'
@@ -62,12 +62,13 @@ describe('ReviewsController', () => {
             };
             mockReviewsService.getHostawayReviews.mockResolvedValue(expectedResponse);
             const result = await controller.getHostawayReviews();
-            expect(result).toBe(expectedResponse);
+            expect(result).toEqual(expectedResponse);
             expect(mockReviewsService.getHostawayReviews).toHaveBeenCalled();
         });
         it('should handle errors gracefully', async () => {
-            mockReviewsService.getHostawayReviews.mockRejectedValue(new Error('Failed to fetch reviews'));
-            await expect(controller.getHostawayReviews()).rejects.toThrow('Failed to fetch reviews');
+            const errorMessage = 'Failed to fetch reviews';
+            mockReviewsService.getHostawayReviews.mockRejectedValue(new Error(errorMessage));
+            await expect(controller.getHostawayReviews()).rejects.toThrow(errorMessage);
         });
         it('should handle empty review array', async () => {
             const expectedResponse = {
@@ -79,7 +80,7 @@ describe('ReviewsController', () => {
             };
             mockReviewsService.getHostawayReviews.mockResolvedValue(expectedResponse);
             const result = await controller.getHostawayReviews();
-            expect(result).toBe(expectedResponse);
+            expect(result).toEqual(expectedResponse);
             expect(result.reviews).toHaveLength(0);
             expect(result.meta.total).toBe(0);
         });
