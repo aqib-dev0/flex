@@ -20,64 +20,29 @@ export default function Properties() {
     const fetchProperties = async () => {
       try {
         setLoading(true);
-        // In a real app, this would call the API
-        // For now we'll use mock data since the API endpoint might not be fully implemented
-        const mockProperties: Property[] = [
-          {
-            id: '123456',
-            name: '2B N1 A - 29 Shoreditch Heights',
-            thumbnail: 'https://picsum.photos/seed/prop1/400/300',
-            averageRating: 9.5,
-            reviewCount: 22,
-            city: 'London',
-            topCategory: 'cleanliness',
-            trending: 'up'
-          },
-          {
-            id: '987421',
-            name: 'Luxury Apartment in Central London',
-            thumbnail: 'https://picsum.photos/seed/prop2/400/300',
-            averageRating: 8.5,
-            reviewCount: 14,
-            city: 'London',
-            topCategory: 'location',
-            trending: 'stable'
-          },
-          {
-            id: '394872',
-            name: 'Cozy Studio in Camden Town',
-            thumbnail: 'https://picsum.photos/seed/prop3/400/300',
-            averageRating: 7.0,
-            reviewCount: 9,
-            city: 'London',
-            topCategory: 'value',
-            trending: 'down'
-          },
-          {
-            id: '736251',
-            name: 'Modern Flat in Manchester',
-            thumbnail: 'https://picsum.photos/seed/prop4/400/300',
-            averageRating: 8.9,
-            reviewCount: 17,
-            city: 'Manchester',
-            topCategory: 'communication',
-            trending: 'up'
-          },
-          {
-            id: '849372',
-            name: 'Charming Cottage in Edinburgh',
-            thumbnail: 'https://picsum.photos/seed/prop5/400/300',
-            averageRating: 9.2,
-            reviewCount: 31,
-            city: 'Edinburgh',
-            topCategory: 'cleanliness',
-            trending: 'stable'
-          }
-        ];
+        // Fetch properties from the API
+        const data = await propertiesApi.getProperties();
         
-        setProperties(mockProperties);
+        // Ensure data is an array and has the correct structure
+        if (!Array.isArray(data)) {
+          throw new Error('Invalid properties data');
+        }
+
+        // Normalize the data to ensure all expected fields are present
+        const normalizedProperties = data.map(prop => ({
+          id: prop.id || '',
+          name: prop.name || 'Unnamed Property',
+          thumbnail: prop.thumbnail || 'https://picsum.photos/seed/default/400/300',
+          averageRating: prop.averageRating || 0,
+          reviewCount: prop.reviewCount || 0,
+          city: prop.city || 'Unknown',
+          topCategory: prop.topCategory || 'N/A',
+          trending: prop.trending || 'stable'
+        }));
+
+        setProperties(normalizedProperties);
       } catch (err) {
-        setError('Failed to load properties');
+        setError('Failed to load properties: ' + (err instanceof Error ? err.message : String(err)));
         console.error(err);
       } finally {
         setLoading(false);
@@ -100,16 +65,21 @@ export default function Properties() {
   // Apply filters and sorting
   const filteredProperties = properties
     .filter((property) => {
+      console.log('Filtering property:', property);
+      console.log('Current filters:', filter);
+
       // Filter by search term
       if (
         filter.search &&
         !property.name.toLowerCase().includes(filter.search.toLowerCase())
       ) {
+        console.log('Failed search filter:', property.name, filter.search);
         return false;
       }
 
       // Filter by city
       if (filter.city && property.city !== filter.city) {
+        console.log('Failed city filter:', property.city, filter.city);
         return false;
       }
 
@@ -130,6 +100,10 @@ export default function Properties() {
           return 0;
       }
     });
+
+  // Log filtering results
+  console.log('Total properties:', properties.length);
+  console.log('Filtered properties:', filteredProperties.length);
 
   return (
     <div className="space-y-6">
