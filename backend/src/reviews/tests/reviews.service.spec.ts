@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ReviewsService } from '../reviews.service';
 import { HostawayNormalizer } from '../normalizers/hostaway.normalizer';
 import { Review, NormalizedReviewsResponse } from '../interfaces/review.interface';
 import * as fs from 'fs';
 import * as path from 'path';
+import { ReviewsService } from '../reviews.service';
 
 describe('ReviewsService', () => {
   let service: ReviewsService;

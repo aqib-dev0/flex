@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { NormalizedReviewsResponse } from '../interfaces/review.interface';
 import { ReviewsController } from '../reviews.controller';
 import { ReviewsService } from '../reviews.service';
-import { NormalizedReviewsResponse } from '../interfaces/review.interface';
 
 describe('ReviewsController', () => {
   let controller: ReviewsController;

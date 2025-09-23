@@ -46,8 +46,8 @@ export class ReviewsService {
         },
       };
     } catch (error) {
-      this.logger.error(`Failed to get Hostaway reviews: ${error.message}`, error.stack);
-      throw new Error(`Failed to get Hostaway reviews: ${error.message}`);
+      this.logger.error(`Failed to get Hostaway reviews: ${error}`);
+      throw new Error(`Failed to get Hostaway reviews: ${error}`);
     }
   }
 
@@ -75,8 +75,8 @@ export class ReviewsService {
         },
       };
     } catch (error) {
-      this.logger.error(`Failed to get Google reviews: ${error.message}`, error.stack);
-      throw new Error(`Failed to get Google reviews: ${error.message}`);
+      this.logger.error(`Failed to get Google reviews: ${error}`);
+      throw new Error(`Failed to get Google reviews: ${error}`);
     }
   }
 
@@ -101,8 +101,8 @@ export class ReviewsService {
         },
       };
     } catch (error) {
-      this.logger.error(`Failed to get all reviews: ${error.message}`, error.stack);
-      throw new Error(`Failed to get all reviews: ${error.message}`);
+      this.logger.error(`Failed to get all reviews: ${error}`);
+      throw new Error(`Failed to get all reviews: ${error}`);
     }
   }
 
@@ -127,7 +127,7 @@ export class ReviewsService {
 
       return updatedReview;
     } catch (error) {
-      this.logger.error(`Failed to approve review: ${error.message}`, error.stack);
+      this.logger.error(`Failed to approve review: ${error}`);
       throw error;
     }
   }
@@ -153,7 +153,7 @@ export class ReviewsService {
           updated++;
         } catch (error) {
           failed++;
-          this.logger.warn(`Failed to update review ${id}: ${error.message}`);
+          this.logger.warn(`Failed to update review ${id}: ${error}`);
         }
       }
 
@@ -163,8 +163,8 @@ export class ReviewsService {
         totalProcessed: ids.length,
       };
     } catch (error) {
-      this.logger.error(`Failed bulk update: ${error.message}`, error.stack);
-      throw new Error(`Failed bulk update: ${error.message}`);
+      this.logger.error(`Failed bulk update: ${error}`);
+      throw new Error(`Failed bulk update: ${error}`);
     }
   }
 }

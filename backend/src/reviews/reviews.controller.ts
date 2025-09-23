@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Patch, Body, Post, Query, HttpException, HttpStatus } from '@nestjs/common';
-import { ReviewsService } from './reviews.service';
 import { NormalizedReviewsResponse } from './interfaces/review.interface';
+import { ReviewsService } from './reviews.service';
 
 @Controller('api/reviews')
 export class ReviewsController {
@@ -16,7 +16,7 @@ export class ReviewsController {
       return await this.reviewsService.getHostawayReviews();
     } catch (error) {
       throw new HttpException(
-        error.message || 'Failed to fetch Hostaway reviews',
+        error || 'Failed to fetch Hostaway reviews',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
@@ -33,7 +33,7 @@ export class ReviewsController {
       return await this.reviewsService.getGoogleReviews(placeId);
     } catch (error) {
       throw new HttpException(
-        error.message || 'Failed to fetch Google reviews',
+        error || 'Failed to fetch Google reviews',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
@@ -49,7 +49,7 @@ export class ReviewsController {
       return await this.reviewsService.getAllReviews();
     } catch (error) {
       throw new HttpException(
-        error.message || 'Failed to fetch reviews',
+        error || 'Failed to fetch reviews',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
@@ -70,7 +70,7 @@ export class ReviewsController {
       return await this.reviewsService.approveReview(id, body.approved);
     } catch (error) {
       throw new HttpException(
-        error.message || 'Failed to update review',
+        error || 'Failed to update review',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
@@ -89,7 +89,7 @@ export class ReviewsController {
       return await this.reviewsService.bulkUpdateReviews(body.ids, body.approved);
     } catch (error) {
       throw new HttpException(
-        error.message || 'Failed to bulk update reviews',
+        error || 'Failed to bulk update reviews',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
