@@ -93,6 +93,7 @@ export default function Reviews() {
         }
       }
 
+      // By default, show all reviews
       return true;
     })
     .sort((a, b) => {

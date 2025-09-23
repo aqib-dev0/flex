@@ -2,6 +2,6 @@
   "/page": "app/page.js",
   "/properties/page": "app/properties/page.js",
   "/reviews/page": "app/reviews/page.js",
-  "/properties/[id]/page": "app/properties/[id]/page.js",
-  "/dashboard/page": "app/dashboard/page.js"
+  "/dashboard/page": "app/dashboard/page.js",
+  "/properties/[id]/page": "app/properties/[id]/page.js"
 }
