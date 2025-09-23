@@ -26,7 +26,8 @@
     },
     "channel": "hostaway",
     "createdTime": "2020-08-21T22:45:14.000Z",
-    "updatedTime": "2020-08-22T10:15:05.000Z"
+    "updatedTime": "2020-08-22T10:15:05.000Z",
+    "approved": false
   },
   {
     "id": "8932",
@@ -57,7 +58,8 @@
     },
     "channel": "airbnb",
     "createdTime": "2021-05-12T15:23:45.000Z",
-    "updatedTime": "2021-05-12T15:23:45.000Z"
+    "updatedTime": "2021-05-12T15:23:45.000Z",
+    "approved": false
   },
   {
     "id": "9125",
@@ -88,7 +90,8 @@
     },
     "channel": "booking",
     "createdTime": "2022-01-07T08:14:22.000Z",
-    "updatedTime": "2022-01-08T11:32:45.000Z"
+    "updatedTime": "2022-01-08T11:32:45.000Z",
+    "approved": true
   },
   {
     "id": "10432",
@@ -116,7 +119,8 @@
     },
     "channel": "hostaway",
     "createdTime": "2022-04-18T14:35:28.000Z",
-    "updatedTime": "2022-04-18T14:35:28.000Z"
+    "updatedTime": "2022-04-18T14:35:28.000Z",
+    "approved": false
   },
   {
     "id": "11567",
@@ -147,7 +151,8 @@
     },
     "channel": "expedia",
     "createdTime": "2022-09-30T17:22:19.000Z",
-    "updatedTime": "2022-09-30T17:22:19.000Z"
+    "updatedTime": "2022-09-30T17:22:19.000Z",
+    "approved": false
   },
   {
     "id": "12789",
@@ -166,6 +171,7 @@
     "score": null,
     "channel": "hostaway",
     "createdTime": "2023-02-15T09:45:11.000Z",
-    "updatedTime": "2023-02-15T09:45:11.000Z"
+    "updatedTime": "2023-02-15T09:45:11.000Z",
+    "approved": true
   }
 ]

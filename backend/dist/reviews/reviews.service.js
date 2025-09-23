@@ -120,6 +120,14 @@ let ReviewsService = ReviewsService_1 = class ReviewsService {
             }
             const updatedReview = Object.assign(Object.assign({}, review), { approved });
             this.reviewsStore.set(id, updatedReview);
+            const filePath = path.resolve(process.cwd(), 'src/data/hostaway/reviews.json');
+            const rawData = fs.readFileSync(filePath, 'utf8');
+            const reviews = JSON.parse(rawData);
+            const reviewIndex = reviews.findIndex((r) => r.id === id);
+            if (reviewIndex !== -1) {
+                reviews[reviewIndex] = Object.assign(Object.assign({}, reviews[reviewIndex]), { approved: approved });
+                fs.writeFileSync(filePath, JSON.stringify(reviews, null, 2));
+            }
             return updatedReview;
         }
         catch (error) {

@@ -18,7 +18,9 @@ class HostawayNormalizer {
             text: this.getStringValue(rawReview.comment),
             submittedAt: this.getSubmittedAt(rawReview.createdTime),
             channel: this.getStringValue(rawReview.channel, 'hostaway'),
-            approved: false,
+            approved: rawReview.approved !== undefined
+                ? Boolean(rawReview.approved)
+                : rawReview.status === 'VISIBLE',
             source: 'hostaway',
             raw: rawReview,
         };

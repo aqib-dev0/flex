@@ -14,7 +14,7 @@ export default function Dashboard() {
     rating: '',
     category: '',
     channel: '',
-    dateRange: '30',
+    dateRange: '',
   });
 
   // Group reviews by property
@@ -35,9 +35,14 @@ export default function Dashboard() {
       try {
         setLoading(true);
         const data = await reviewsApi.getAllReviews();
+        // Ensure reviews are properly populated
+        if (!data || !data.reviews) {
+          setError('No reviews found');
+          return;
+        }
         setReviews(data.reviews);
       } catch (err) {
-        setError('Failed to load reviews');
+        setError('Failed to load reviews: ' + (err instanceof Error ? err.message : String(err)));
         console.error(err);
       } finally {
         setLoading(false);
@@ -60,14 +65,24 @@ export default function Dashboard() {
 
     try {
       setLoading(true);
-      await reviewsApi.bulkUpdateReviews(selectedReviews, true);
+      // Update each review individually to ensure proper processing
+      const updatePromises = selectedReviews.map(reviewId => 
+        reviewsApi.approveReview(reviewId, true)
+      );
+      
+      await Promise.all(updatePromises);
+      
       // Refresh the reviews
       const data = await reviewsApi.getAllReviews();
       setReviews(data.reviews);
       setSelectedReviews([]);
+      
+      // Show success message
+      alert(`Successfully approved ${updatePromises.length} reviews`);
     } catch (err) {
       console.error('Failed to update reviews:', err);
       setError('Failed to approve reviews');
+      alert('Failed to approve some or all selected reviews');
     } finally {
       setLoading(false);
     }
@@ -78,14 +93,24 @@ export default function Dashboard() {
 
     try {
       setLoading(true);
-      await reviewsApi.bulkUpdateReviews(selectedReviews, false);
+      // Update each review individually to ensure proper processing
+      const updatePromises = selectedReviews.map(reviewId => 
+        reviewsApi.approveReview(reviewId, false)
+      );
+      
+      await Promise.all(updatePromises);
+      
       // Refresh the reviews
       const data = await reviewsApi.getAllReviews();
       setReviews(data.reviews);
       setSelectedReviews([]);
+      
+      // Show success message
+      alert(`Successfully unapproved ${updatePromises.length} reviews`);
     } catch (err) {
       console.error('Failed to update reviews:', err);
       setError('Failed to unapprove reviews');
+      alert('Failed to unapprove some or all selected reviews');
     } finally {
       setLoading(false);
     }

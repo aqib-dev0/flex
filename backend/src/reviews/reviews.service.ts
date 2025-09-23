@@ -122,8 +122,26 @@ export class ReviewsService {
       // Update the approval status
       const updatedReview = { ...review, approved };
       
-      // Save the updated review
+      // Save the updated review in memory
       this.reviewsStore.set(id, updatedReview);
+
+      // Persist changes to the JSON file
+      const filePath = path.resolve(process.cwd(), 'src/data/hostaway/reviews.json');
+      const rawData = fs.readFileSync(filePath, 'utf8');
+      const reviews = JSON.parse(rawData);
+
+      // Find and update the review in the original data
+      const reviewIndex = reviews.findIndex((r: any) => r.id === id);
+      if (reviewIndex !== -1) {
+        // Preserve original data structure while updating approval
+        reviews[reviewIndex] = {
+          ...reviews[reviewIndex],
+          approved: approved
+        };
+
+        // Write back to file
+        fs.writeFileSync(filePath, JSON.stringify(reviews, null, 2));
+      }
 
       return updatedReview;
     } catch (error) {

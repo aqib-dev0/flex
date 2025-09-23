@@ -14,7 +14,7 @@ export default function Reviews() {
     rating: '',
     category: '',
     channel: '',
-    dateRange: '30',
+    dateRange: '',
     source: '',
   });
 

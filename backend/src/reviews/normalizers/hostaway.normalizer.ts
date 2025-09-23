@@ -15,22 +15,24 @@ export class HostawayNormalizer {
       throw new Error('Review data is required');
     }
 
-    return {
-      id: this.getStringValue(rawReview.id),
-      listingId: this.getStringValue(rawReview.listingMapId),
-      listingName: this.getStringValue(rawReview.listingName),
-      reviewer: this.getReviewerName(rawReview.reviewer),
-      type: this.getReviewType(rawReview.reviewerType),
-      status: this.getReviewStatus(rawReview.status),
-      rating: this.getRating(rawReview.score),
-      categories: this.getCategories(rawReview.score),
-      text: this.getStringValue(rawReview.comment),
-      submittedAt: this.getSubmittedAt(rawReview.createdTime),
-      channel: this.getStringValue(rawReview.channel, 'hostaway'),
-      approved: false, // Default to false as reviews need approval in our system
-      source: 'hostaway' as ReviewSource,
-      raw: rawReview, // Store the original raw data
-    };
+      return {
+        id: this.getStringValue(rawReview.id),
+        listingId: this.getStringValue(rawReview.listingMapId),
+        listingName: this.getStringValue(rawReview.listingName),
+        reviewer: this.getReviewerName(rawReview.reviewer),
+        type: this.getReviewType(rawReview.reviewerType),
+        status: this.getReviewStatus(rawReview.status),
+        rating: this.getRating(rawReview.score),
+        categories: this.getCategories(rawReview.score),
+        text: this.getStringValue(rawReview.comment),
+        submittedAt: this.getSubmittedAt(rawReview.createdTime),
+        channel: this.getStringValue(rawReview.channel, 'hostaway'),
+        approved: rawReview.approved !== undefined 
+          ? Boolean(rawReview.approved) 
+          : rawReview.status === 'VISIBLE', // Default to true if visible
+        source: 'hostaway' as ReviewSource,
+        raw: rawReview, // Store the original raw data
+      };
   }
 
   /**
