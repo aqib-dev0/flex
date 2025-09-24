@@ -156,7 +156,7 @@ export default function Reviews() {
                     onChange={handleFilterChange}
                     className="input w-full"
                   >
-                    {field.options.map((opt, i) => (
+                    {(field.options ?? []).map((opt, i) => (
                       <option key={i} value={opt.includes('+') ? opt.replace('+','') : opt.includes('Last') ? opt.split(' ')[1] : ''}>
                         {opt}
                       </option>
@@ -211,29 +211,29 @@ export default function Reviews() {
                       </div>
                       <div className="text-sm text-secondary-500">{review.type}</div>
                     </td>
-<td className="px-6 py-4 whitespace-nowrap align-top">
-  <span className="flex items-center text-amber-500 font-medium">
-    ★ {review.rating || 'N/A'}
-  </span>
-  <div className="text-xs text-secondary-500 mt-1 space-y-1">
-    {Object.entries(review.categories || {})
-      .reduce((acc: [string, number][][], curr, idx) => {
-        const [key, rating] = curr;
-        if (rating !== undefined) {
-          if (idx % 2 === 0) acc.push([[key, rating]]);
-          else acc[acc.length - 1].push([key, rating]);
-        }
-        return acc;
-      }, [])
-      .map((pair, i) => (
-        <div key={i}>
-          {pair
-            .map(([k, v]) => `${k.replace('_', ' ')}: ${v}`)
-            .join(', ')}
-        </div>
-      ))}
-  </div>
-</td>
+                    <td className="px-6 py-4 whitespace-nowrap align-top">
+                      <span className="flex items-center text-amber-500 font-medium">
+                        ★ {review.rating || 'N/A'}
+                      </span>
+                      <div className="text-xs text-secondary-500 mt-1 space-y-1">
+                        {Object.entries(review.categories || {})
+                          .reduce((acc: [string, number][][], curr, idx) => {
+                            const [key, rating] = curr;
+                            if (rating !== undefined) {
+                              if (idx % 2 === 0) acc.push([[key, rating]]);
+                              else acc[acc.length - 1].push([key, rating]);
+                            }
+                            return acc;
+                          }, [])
+                          .map((pair, i) => (
+                            <div key={i}>
+                              {pair
+                                .map(([k, v]) => `${k.replace('_', ' ')}: ${v}`)
+                                .join(', ')}
+                            </div>
+                          ))}
+                      </div>
+                    </td>
 
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-secondary-500">
                       {review.channel}
