@@ -108,14 +108,14 @@ export default function Properties() {
   return (
     <div className="space-y-6">
       <div className="sm:flex sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight text-secondary-900 dark:text-secondary-100">
+          <div>
+            <h2 className="text-2xl font-bold tracking-tight text-primary-600">
             Property Portfolio
-          </h1>
-          <p className="mt-2 text-sm text-secondary-600 dark:text-secondary-400">
+            </h2>
+            <p className="mt-2 text-secondary-600">
             View and manage all properties in the Flex Living portfolio
-          </p>
-        </div>
+            </p>
+          </div>
         <div className="mt-4 sm:mt-0">
           <Link href="/dashboard" className="btn btn-primary">
             Reviews Dashboard
@@ -178,7 +178,11 @@ export default function Properties() {
       ) : (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filteredProperties.map((property) => (
-            <Link href={`/properties/${property.id}`} key={property.id} className="card hover:shadow-lg transition-shadow">
+            <Link
+              href={`/properties/${property.id}`}
+              key={property.id}
+              className="card hover:shadow-lg transition-shadow bg-white"
+            >
               <div className="relative w-full h-48">
                 <Image
                   src={property.thumbnail || '/placeholder-image.jpg'}
@@ -189,40 +193,57 @@ export default function Properties() {
                   priority
                 />
                 <div className="absolute top-2 right-2">
-                  <span className={`badge ${property.trending === 'up' ? 'badge-green' : property.trending === 'down' ? 'badge-red' : 'badge-yellow'}`}>
-                    {property.trending === 'up' ? '↑ Trending up' : property.trending === 'down' ? '↓ Trending down' : '→ Stable'}
+                  <span
+                    className={`badge ${
+                      property.trending === 'up'
+                        ? 'badge-green'
+                        : property.trending === 'down'
+                        ? 'badge-red'
+                        : 'badge-yellow'
+                    }`}
+                  >
+                    {property.trending === 'up'
+                      ? '↑ Trending up'
+                      : property.trending === 'down'
+                      ? '↓ Trending down'
+                      : '→ Stable'}
                   </span>
                 </div>
               </div>
               <div className="p-4">
                 <div className="flex items-start justify-between">
-                  <h3 className="text-lg font-semibold text-secondary-900 dark:text-secondary-100 truncate">
+                  <h3 className="text-lg font-semibold text-primary-700 truncate">
                     {property.name}
                   </h3>
                 </div>
-                <div className="mt-1 text-sm text-secondary-500 dark:text-secondary-400">
-                  {property.city}
-                </div>
+                <div className="mt-1 text-sm text-secondary-500">{property.city}</div>
                 <div className="mt-4 flex items-center justify-between">
                   <div className="flex items-center">
                     <span className="flex items-center text-amber-500">
                       <svg className="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                       </svg>
-                      <span className="font-medium">{property.averageRating?.toFixed(1) ?? 'N/A'}</span>
+                      <span className="font-medium">
+                        {property.averageRating?.toFixed(1) ?? 'N/A'}
+                      </span>
                     </span>
-                    <span className="ml-2 text-secondary-500 dark:text-secondary-400 text-sm">
+                    <span className="ml-2 text-secondary-500 text-sm">
                       ({property.reviewCount ?? 0} reviews)
                     </span>
                   </div>
                   <div>
-                    <span className="badge badge-blue">
+                    <span className="badge bg-primary-100 text-primary-700">
                       Top: {property.topCategory}
                     </span>
                   </div>
                 </div>
-                <div className="mt-4 h-2 bg-secondary-200 dark:bg-secondary-700 rounded-full overflow-hidden">
-                  <div className="h-full bg-primary-500" style={{ width: `${((property.averageRating ?? 0) / 10) * 100}%` }}></div>
+                <div className="mt-4 h-2 bg-secondary-100 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-primary-500"
+                    style={{
+                      width: `${((property.averageRating ?? 0) / 10) * 100}%`,
+                    }}
+                  ></div>
                 </div>
               </div>
             </Link>
