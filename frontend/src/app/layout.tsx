@@ -1,6 +1,7 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import Link from 'next/link'
 
 // Initialize the Inter font
 const inter = Inter({ 
@@ -28,12 +29,14 @@ export default function RootLayout({
               <div className="flex justify-between h-16 items-center">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
-                    <span className="font-light text-xl text-white"><span className="font-bold">the</span> flex.</span>
+                    <Link href="/" className="text-white hover:text-secondary-50">
+                      <span className="font-light text-xl"><span className="font-bold">the</span> flex.</span>
+                    </Link>
                   </div>
                   <nav className="ml-6 flex space-x-4">
-                    <a href="/" className="text-white hover:text-secondary-50 px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
-                    <a href="/properties" className="text-white hover:text-secondary-50 px-3 py-2 rounded-md text-sm font-medium">Properties</a>
-                    <a href="/reviews" className="text-white hover:text-secondary-50 px-3 py-2 rounded-md text-sm font-medium">Reviews</a>
+                    <Link href="http://localhost:3002/dashboard" className="text-white hover:text-secondary-50 px-3 py-2 rounded-md text-sm font-medium">Dashboard</Link>
+                    <Link href="/properties" className="text-white hover:text-secondary-50 px-3 py-2 rounded-md text-sm font-medium">Properties</Link>
+                    <Link href="/reviews" className="text-white hover:text-secondary-50 px-3 py-2 rounded-md text-sm font-medium">Reviews</Link>
                   </nav>
                 </div>
                 <div className="flex items-center">
