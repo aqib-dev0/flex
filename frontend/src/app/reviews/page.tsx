@@ -47,6 +47,7 @@ export default function Reviews() {
 
   const filteredReviews = reviews
     .filter((review) => {
+      // search
       if (
         filter.search &&
         !review.reviewer.toLowerCase().includes(filter.search.toLowerCase()) &&
@@ -55,6 +56,7 @@ export default function Reviews() {
         return false;
       }
 
+      // rating
       if (filter.rating && review.rating) {
         const minRating = parseInt(filter.rating);
         if (review.rating < minRating) {
@@ -62,21 +64,26 @@ export default function Reviews() {
         }
       }
 
+      // category
       if (filter.category && review.categories) {
-        const categoryRating = review.categories[filter.category];
-        if (!categoryRating) {
-          return false;
-        }
+        const normalizedKey = filter.category.toLowerCase();
+        const match = Object.keys(review.categories).some(
+          (k) => k.toLowerCase() === normalizedKey
+        );
+        if (!match) return false;
       }
 
-      if (filter.channel && review.channel !== filter.channel) {
+      // channel
+      if (filter.channel && review.channel.toLowerCase() !== filter.channel.toLowerCase()) {
         return false;
       }
 
-      if (filter.source && review.source !== filter.source) {
+      // source
+      if (filter.source && review.source.toLowerCase() !== filter.source.toLowerCase()) {
         return false;
       }
 
+      // date range
       if (filter.dateRange) {
         const daysAgo = parseInt(filter.dateRange);
         const cutoffDate = new Date();
@@ -123,48 +130,143 @@ export default function Reviews() {
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {[
-              { id: 'search', label: 'Search', type: 'input', placeholder: 'Search by name or property...' },
-              { id: 'rating', label: 'Minimum Rating', type: 'select', options: ['Any Rating','9+','8+','7+','6+','5+','4+','3+','2+','1+'] },
-              { id: 'category', label: 'Category', type: 'select', options: ['All Categories','Cleanliness','Communication','Check-in','Accuracy','Location','Value','House Rules'] },
-              { id: 'channel', label: 'Channel', type: 'select', options: ['All Channels','Airbnb','Booking.com','VRBO','Google'] },
-              { id: 'source', label: 'Source', type: 'select', options: ['All Sources','Hostaway','Google'] },
-              { id: 'dateRange', label: 'Time Period', type: 'select', options: ['All time','Last 30 days','Last 90 days','Last 6 months','Last year'] },
-            ].map((field) => (
-              <div key={field.id}>
-                <label
-                  htmlFor={field.id}
-                  className="block text-sm font-medium text-secondary-700 mb-1"
-                >
-                  {field.label}
-                </label>
-                {field.type === 'input' ? (
-                  <input
-                    type="text"
-                    id={field.id}
-                    name={field.id}
-                    value={(filter as any)[field.id]}
-                    onChange={handleFilterChange}
-                    className="input w-full"
-                    placeholder={field.placeholder}
-                  />
-                ) : (
-                  <select
-                    id={field.id}
-                    name={field.id}
-                    value={(filter as any)[field.id]}
-                    onChange={handleFilterChange}
-                    className="input w-full"
-                  >
-                    {(field.options ?? []).map((opt, i) => (
-                      <option key={i} value={opt.includes('+') ? opt.replace('+','') : opt.includes('Last') ? opt.split(' ')[1] : ''}>
-                        {opt}
-                      </option>
-                    ))}
-                  </select>
-                )}
-              </div>
-            ))}
+            {/* Search */}
+            <div>
+              <label
+                htmlFor="search"
+                className="block text-sm font-medium text-secondary-700 mb-1"
+              >
+                Search
+              </label>
+              <input
+                type="text"
+                id="search"
+                name="search"
+                value={filter.search}
+                onChange={handleFilterChange}
+                className="input w-full"
+                placeholder="Search by name or property..."
+              />
+            </div>
+
+            {/* Rating */}
+            <div>
+              <label
+                htmlFor="rating"
+                className="block text-sm font-medium text-secondary-700 mb-1"
+              >
+                Minimum Rating
+              </label>
+              <select
+                id="rating"
+                name="rating"
+                value={filter.rating}
+                onChange={handleFilterChange}
+                className="input w-full"
+              >
+                <option value="">Any Rating</option>
+                {[9, 8, 7, 6, 5, 4, 3, 2, 1].map((r) => (
+                  <option key={r} value={r}>
+                    {r}+
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Category */}
+            <div>
+              <label
+                htmlFor="category"
+                className="block text-sm font-medium text-secondary-700 mb-1"
+              >
+                Category
+              </label>
+              <select
+                id="category"
+                name="category"
+                value={filter.category}
+                onChange={handleFilterChange}
+                className="input w-full"
+              >
+                <option value="">All Categories</option>
+                {['Cleanliness','Communication','Check-in','Accuracy','Location','Value','House Rules'].map((c) => (
+                  <option key={c} value={c.toLowerCase()}>
+                    {c}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Channel */}
+            <div>
+              <label
+                htmlFor="channel"
+                className="block text-sm font-medium text-secondary-700 mb-1"
+              >
+                Channel
+              </label>
+              <select
+                id="channel"
+                name="channel"
+                value={filter.channel}
+                onChange={handleFilterChange}
+                className="input w-full"
+              >
+                <option value="">All Channels</option>
+                {['Airbnb','Booking.com','VRBO','Google'].map((ch) => (
+                  <option key={ch} value={ch.toLowerCase()}>
+                    {ch}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Source */}
+            <div>
+              <label
+                htmlFor="source"
+                className="block text-sm font-medium text-secondary-700 mb-1"
+              >
+                Source
+              </label>
+              <select
+                id="source"
+                name="source"
+                value={filter.source}
+                onChange={handleFilterChange}
+                className="input w-full"
+              >
+                <option value="">All Sources</option>
+                {['Hostaway','Google'].map((src) => (
+                  <option key={src} value={src.toLowerCase()}>
+                    {src}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Date Range */}
+            <div>
+              <label
+                htmlFor="dateRange"
+                className="block text-sm font-medium text-secondary-700 mb-1"
+              >
+                Time Period
+              </label>
+              <select
+                id="dateRange"
+                name="dateRange"
+                value={filter.dateRange}
+                onChange={handleFilterChange}
+                className="input w-full"
+              >
+                <option value="">All time</option>
+                <option value="30">Last 30 days</option>
+                <option value="90">Last 90 days</option>
+                <option value="180">Last 6 months</option>
+                <option value="365">Last year</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
@@ -183,33 +285,33 @@ export default function Reviews() {
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-secondary-200">
               <thead className="bg-secondary-50">
-              <tr>
-                {['Property','Reviewer','Rating','Channel','Date','Approved'].map((col) => (
-                  <th
-                    key={col}
-                    className="px-6 py-3 text-left text-xs font-semibold text-primary-700 uppercase tracking-wider"
-                  >
-                    {col}
-                  </th>
-                ))}
-              </tr>
-            </thead>
+                <tr>
+                  {['Property','Reviewer','Rating','Channel','Date','Approved'].map((col) => (
+                    <th
+                      key={col}
+                      className="px-6 py-3 text-left text-sm font-bold text-primary-700 uppercase tracking-wider"
+                    >
+                      {col}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
               <tbody className="bg-white divide-y divide-secondary-200">
                 {filteredReviews.map((review) => (
                   <tr key={review.id} className="hover:bg-secondary-50">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <Link 
-                      href={`/properties/${review.listingId}`}
-                      className="text-sm font-normal text-primary-600 hover:text-primary-800"
-                    >
-                      {review.listingName}
-                    </Link>
-                  </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <Link
+                        href={`/properties/${review.listingId}`}
+                        className="text-sm font-medium text-primary-600 hover:text-primary-800"
+                      >
+                        {review.listingName}
+                      </Link>
+                    </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-secondary-900">
                         {review.reviewer}
                       </div>
-                      <div className="text-sm text-secondary-500">{review.type}</div>
+                      <div className="text-xs text-secondary-500">{review.type}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap align-top">
                       <span className="flex items-center text-amber-500 font-medium">
@@ -234,7 +336,6 @@ export default function Reviews() {
                           ))}
                       </div>
                     </td>
-
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-secondary-500">
                       {review.channel}
                     </td>
