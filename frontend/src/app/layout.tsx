@@ -2,6 +2,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import Link from 'next/link'
+import Navigation from '@/components/Navigation'
 
 // Initialize the Inter font
 const inter = Inter({ 
@@ -33,11 +34,7 @@ export default function RootLayout({
                       <span className="font-light text-xl"><span className="font-bold">the</span> flex.</span>
                     </Link>
                   </div>
-                  <nav className="ml-6 flex space-x-4">
-                    <Link href="http://localhost:3002/dashboard" className="text-white hover:text-secondary-50 px-3 py-2 rounded-md text-sm font-medium">Dashboard</Link>
-                    <Link href="/properties" className="text-white hover:text-secondary-50 px-3 py-2 rounded-md text-sm font-medium">Properties</Link>
-                    <Link href="/reviews" className="text-white hover:text-secondary-50 px-3 py-2 rounded-md text-sm font-medium">Reviews</Link>
-                  </nav>
+                  <Navigation />
                 </div>
                 <div className="flex items-center">
                   <span className="text-sm text-white">Admin Dashboard</span>
