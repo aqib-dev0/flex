@@ -183,28 +183,28 @@ export default function Reviews() {
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-secondary-200">
               <thead className="bg-secondary-50">
-                <tr>
-                  {['Property','Reviewer','Rating','Channel','Date','Approved'].map((col) => (
-                    <th
-                      key={col}
-                      className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider"
-                    >
-                      {col}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
+              <tr>
+                {['Property','Reviewer','Rating','Channel','Date','Approved'].map((col) => (
+                  <th
+                    key={col}
+                    className="px-6 py-3 text-left text-xs font-semibold text-primary-700 uppercase tracking-wider"
+                  >
+                    {col}
+                  </th>
+                ))}
+              </tr>
+            </thead>
               <tbody className="bg-white divide-y divide-secondary-200">
                 {filteredReviews.map((review) => (
                   <tr key={review.id} className="hover:bg-secondary-50">
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <Link
-                        href={`/properties/${review.listingId}`}
-                        className="text-primary-600 hover:text-primary-800 font-medium"
-                      >
-                        {review.listingName}
-                      </Link>
-                    </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <Link 
+                      href={`/properties/${review.listingId}`}
+                      className="text-sm font-normal text-primary-600 hover:text-primary-800"
+                    >
+                      {review.listingName}
+                    </Link>
+                  </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-secondary-900">
                         {review.reviewer}
@@ -215,9 +215,9 @@ export default function Reviews() {
                       <span className="flex items-center text-amber-500 font-medium">
                         ★ {review.rating || 'N/A'}
                       </span>
-                      <div className="text-xs mt-1 text-secondary-500">
+                      <div className="flex flex-wrap gap-x-2 gap-y-1 text-xs text-secondary-500 mt-1">
                         {Object.entries(review.categories || {}).map(([k, v]) => (
-                          <span key={k} className="mr-2">
+                          <span key={k}>
                             {k.replace('_', ' ')}: {v}
                           </span>
                         ))}
