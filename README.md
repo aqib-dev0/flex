@@ -364,8 +364,8 @@ The integration with Google Places API for fetching Google reviews was explored 
 
 1. Clone the repository
 ```bash
-git clone [repository-url]
-cd flex-living-review-system
+git clone git@github.com:aqib-dev0/flex.git
+cd flex
 ```
 
 2. Install dependencies
