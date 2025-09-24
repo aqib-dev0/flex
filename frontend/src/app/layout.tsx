@@ -31,15 +31,13 @@ export default function RootLayout({
                     <span className="font-light text-xl text-white"><span className="font-bold">the</span> flex.</span>
                   </div>
                   <nav className="ml-6 flex space-x-4">
-                    <a href="/" className="text-white hover:text-secondary-50 px-3 py-2 rounded-md text-sm font-medium">Landlords</a>
-                    <a href="/about" className="text-white hover:text-secondary-50 px-3 py-2 rounded-md text-sm font-medium">About Us</a>
-                    <a href="/careers" className="text-white hover:text-secondary-50 px-3 py-2 rounded-md text-sm font-medium">Careers</a>
-                    <a href="/contact" className="text-white hover:text-secondary-50 px-3 py-2 rounded-md text-sm font-medium">Contact</a>
+                    <a href="/" className="text-white hover:text-secondary-50 px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
+                    <a href="/properties" className="text-white hover:text-secondary-50 px-3 py-2 rounded-md text-sm font-medium">Properties</a>
+                    <a href="/reviews" className="text-white hover:text-secondary-50 px-3 py-2 rounded-md text-sm font-medium">Reviews</a>
                   </nav>
                 </div>
-                <div className="flex items-center space-x-6">
-                  <span className="text-sm text-white">English</span>
-                  <span className="text-sm font-medium text-white">GBP</span>
+                <div className="flex items-center">
+                  <span className="text-sm text-white">Admin Dashboard</span>
                 </div>
               </div>
             </div>
