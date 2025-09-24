@@ -47,7 +47,6 @@ export default function Reviews() {
 
   const filteredReviews = reviews
     .filter((review) => {
-      // Filter by search term (reviewer name or property name)
       if (
         filter.search &&
         !review.reviewer.toLowerCase().includes(filter.search.toLowerCase()) &&
@@ -56,7 +55,6 @@ export default function Reviews() {
         return false;
       }
 
-      // Filter by rating
       if (filter.rating && review.rating) {
         const minRating = parseInt(filter.rating);
         if (review.rating < minRating) {
@@ -64,7 +62,6 @@ export default function Reviews() {
         }
       }
 
-      // Filter by category
       if (filter.category && review.categories) {
         const categoryRating = review.categories[filter.category];
         if (!categoryRating) {
@@ -72,17 +69,14 @@ export default function Reviews() {
         }
       }
 
-      // Filter by channel
       if (filter.channel && review.channel !== filter.channel) {
         return false;
       }
 
-      // Filter by source
       if (filter.source && review.source !== filter.source) {
         return false;
       }
 
-      // Filter by date range
       if (filter.dateRange) {
         const daysAgo = parseInt(filter.dateRange);
         const cutoffDate = new Date();
@@ -93,16 +87,15 @@ export default function Reviews() {
         }
       }
 
-      // By default, show all reviews
       return true;
     })
     .sort((a, b) => {
-      // Sort by date, newest first
       return new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime();
     });
 
   return (
     <div className="space-y-6">
+      {/* Page Header */}
       <div className="sm:flex sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-primary-800">
@@ -113,159 +106,73 @@ export default function Reviews() {
           </p>
         </div>
         <div className="mt-4 sm:mt-0">
-          <Link href="/dashboard" className="px-4 py-2 text-sm font-medium bg-primary-600 text-white rounded-md hover:bg-primary-700 transition-colors shadow-sm">
+          <Link
+            href="/dashboard"
+            className="px-4 py-2 text-sm font-medium bg-primary-600 text-white rounded-md hover:bg-primary-700 transition-colors shadow-sm"
+          >
             Reviews Dashboard
           </Link>
         </div>
       </div>
 
+      {/* Filters Card */}
       <div className="bg-white shadow-md rounded-lg overflow-hidden border border-secondary-100">
         <div className="p-4 sm:p-6 border-b border-secondary-200">
           <h2 className="text-lg font-medium text-primary-700 mb-4">
             Filter Reviews
           </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-            <div>
-              <label
-                htmlFor="search"
-                className="block text-sm font-medium text-secondary-700 mb-1"
-              >
-                Search
-              </label>
-              <input
-                type="text"
-                id="search"
-                name="search"
-                value={filter.search}
-                onChange={handleFilterChange}
-                className="input w-full"
-                placeholder="Search by name or property..."
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="rating"
-                className="block text-sm font-medium text-secondary-700 mb-1"
-              >
-                Minimum Rating
-              </label>
-              <select
-                id="rating"
-                name="rating"
-                value={filter.rating}
-                onChange={handleFilterChange}
-                className="input w-full"
-              >
-                <option value="">Any Rating</option>
-                <option value="9">9+</option>
-                <option value="8">8+</option>
-                <option value="7">7+</option>
-                <option value="6">6+</option>
-                <option value="5">5+</option>
-                <option value="4">4+</option>
-                <option value="3">3+</option>
-                <option value="2">2+</option>
-                <option value="1">1+</option>
-              </select>
-            </div>
-
-            <div>
-              <label
-                htmlFor="category"
-                className="block text-sm font-medium text-secondary-700 mb-1"
-              >
-                Category
-              </label>
-              <select
-                id="category"
-                name="category"
-                value={filter.category}
-                onChange={handleFilterChange}
-                className="input w-full"
-              >
-                <option value="">All Categories</option>
-                <option value="cleanliness">Cleanliness</option>
-                <option value="communication">Communication</option>
-                <option value="check_in">Check-in</option>
-                <option value="accuracy">Accuracy</option>
-                <option value="location">Location</option>
-                <option value="value">Value</option>
-                <option value="respect_house_rules">House Rules</option>
-              </select>
-            </div>
-
-            <div>
-              <label
-                htmlFor="channel"
-                className="block text-sm font-medium text-secondary-700 mb-1"
-              >
-                Channel
-              </label>
-              <select
-                id="channel"
-                name="channel"
-                value={filter.channel}
-                onChange={handleFilterChange}
-                className="input w-full"
-              >
-                <option value="">All Channels</option>
-                <option value="airbnb">Airbnb</option>
-                <option value="booking.com">Booking.com</option>
-                <option value="vrbo">VRBO</option>
-                <option value="google">Google</option>
-              </select>
-            </div>
-
-            <div>
-              <label
-                htmlFor="source"
-                className="block text-sm font-medium text-secondary-700 mb-1"
-              >
-                Source
-              </label>
-              <select
-                id="source"
-                name="source"
-                value={filter.source}
-                onChange={handleFilterChange}
-                className="input w-full"
-              >
-                <option value="">All Sources</option>
-                <option value="hostaway">Hostaway</option>
-                <option value="google">Google</option>
-              </select>
-            </div>
-
-            <div>
-              <label
-                htmlFor="dateRange"
-                className="block text-sm font-medium text-secondary-700 mb-1"
-              >
-                Time Period
-              </label>
-              <select
-                id="dateRange"
-                name="dateRange"
-                value={filter.dateRange}
-                onChange={handleFilterChange}
-                className="input w-full"
-              >
-                <option value="30">Last 30 days</option>
-                <option value="90">Last 90 days</option>
-                <option value="180">Last 6 months</option>
-                <option value="365">Last year</option>
-                <option value="">All time</option>
-              </select>
-            </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[
+              { id: 'search', label: 'Search', type: 'input', placeholder: 'Search by name or property...' },
+              { id: 'rating', label: 'Minimum Rating', type: 'select', options: ['Any Rating','9+','8+','7+','6+','5+','4+','3+','2+','1+'] },
+              { id: 'category', label: 'Category', type: 'select', options: ['All Categories','Cleanliness','Communication','Check-in','Accuracy','Location','Value','House Rules'] },
+              { id: 'channel', label: 'Channel', type: 'select', options: ['All Channels','Airbnb','Booking.com','VRBO','Google'] },
+              { id: 'source', label: 'Source', type: 'select', options: ['All Sources','Hostaway','Google'] },
+              { id: 'dateRange', label: 'Time Period', type: 'select', options: ['All time','Last 30 days','Last 90 days','Last 6 months','Last year'] },
+            ].map((field) => (
+              <div key={field.id}>
+                <label
+                  htmlFor={field.id}
+                  className="block text-sm font-medium text-secondary-700 mb-1"
+                >
+                  {field.label}
+                </label>
+                {field.type === 'input' ? (
+                  <input
+                    type="text"
+                    id={field.id}
+                    name={field.id}
+                    value={(filter as any)[field.id]}
+                    onChange={handleFilterChange}
+                    className="input w-full"
+                    placeholder={field.placeholder}
+                  />
+                ) : (
+                  <select
+                    id={field.id}
+                    name={field.id}
+                    value={(filter as any)[field.id]}
+                    onChange={handleFilterChange}
+                    className="input w-full"
+                  >
+                    {field.options.map((opt, i) => (
+                      <option key={i} value={opt.includes('+') ? opt.replace('+','') : opt.includes('Last') ? opt.split(' ')[1] : ''}>
+                        {opt}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              </div>
+            ))}
           </div>
         </div>
+      </div>
 
+      {/* Reviews Table */}
+      <div className="bg-white shadow-md rounded-lg overflow-hidden border border-secondary-100">
         {loading ? (
-          <div className="p-6 text-center text-secondary-600">
-            <p>Loading reviews...</p>
-          </div>
+          <div className="p-6 text-center text-secondary-600">Loading reviews...</div>
         ) : error ? (
           <div className="p-6 text-center text-red-500">{error}</div>
         ) : filteredReviews.length === 0 ? (
@@ -277,31 +184,21 @@ export default function Reviews() {
             <table className="min-w-full divide-y divide-secondary-200">
               <thead className="bg-secondary-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
-                    Property
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
-                    Reviewer
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
-                    Rating
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
-                    Channel
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
-                    Date
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
-                    Approved
-                  </th>
+                  {['Property','Reviewer','Rating','Channel','Date','Approved'].map((col) => (
+                    <th
+                      key={col}
+                      className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider"
+                    >
+                      {col}
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-secondary-200">
                 {filteredReviews.map((review) => (
                   <tr key={review.id} className="hover:bg-secondary-50">
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <Link 
+                      <Link
                         href={`/properties/${review.listingId}`}
                         className="text-primary-600 hover:text-primary-800 font-medium"
                       >
@@ -312,30 +209,18 @@ export default function Reviews() {
                       <div className="text-sm font-medium text-secondary-900">
                         {review.reviewer}
                       </div>
-                      <div className="text-sm text-secondary-500">
-                        {review.type}
-                      </div>
+                      <div className="text-sm text-secondary-500">{review.type}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <span className="flex items-center text-amber-500">
-                          <svg className="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                          </svg>
-                          <span className="font-medium">{review.rating || 'N/A'}</span>
-                        </span>
-                      </div>
-                      <div className="text-xs mt-1">
-                        {Object.entries(review.categories || {}).map(
-                          ([key, value]) => (
-                            <span 
-                              key={key}
-                              className="inline-block mr-1 text-secondary-500"
-                            >
-                              {key.replace('_', ' ')}: {value}
-                            </span>
-                          )
-                        )}
+                      <span className="flex items-center text-amber-500 font-medium">
+                        ★ {review.rating || 'N/A'}
+                      </span>
+                      <div className="text-xs mt-1 text-secondary-500">
+                        {Object.entries(review.categories || {}).map(([k, v]) => (
+                          <span key={k} className="mr-2">
+                            {k.replace('_', ' ')}: {v}
+                          </span>
+                        ))}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-secondary-500">
